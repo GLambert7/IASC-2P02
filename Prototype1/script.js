@@ -38,7 +38,7 @@ const testSphere = new THREE.Mesh(sphereGeometry, sphereMaterial)
 scene.add(testSphere)
 
 // newBox
-const boxGeometry = new THREE.BoxGeometry(1)
+const boxGeometry = new THREE.BoxGeometry(1.2, 1.2, 1.2)
 const boxMaterial = new THREE.MeshNormalMaterial()
 const testBox = new THREE.Mesh(boxGeometry, boxMaterial)
 
