@@ -57,14 +57,21 @@ const animation = () =>
     
 
     // Animate testSphere
-    testSphere.position.y = Math.sin(elapsedTime)
-    testSphere.position.x = Math.cos(elapsedTime)
+    testSphere.position.x = Math.sin(elapsedTime)
+    testSphere.position.y = Math.cos(elapsedTime)
     testSphere.rotation.x += 0.01;
     testSphere.rotation.y += 0.01;
 
+     // Animate  distance
+    const distance = 2
+    testSphere.position.x = Math.sin(elapsedTime) * distance
+    testSphere.position.y = Math.cos(elapsedTime) * distance
+    testBox.position.x = Math.sin(elapsedTime) * distance
+    testBox.position.y = Math.cos(elapsedTime) * distance
+
         // Animate testBox
-        testBox.position.y = Math.sin(elapsedTime + 60)
-        testBox.position.x = Math.cos(elapsedTime + 60)
+        testBox.position.x = Math.sin(elapsedTime + 60)
+        testBox.position.y = Math.cos(elapsedTime + 60)
         testBox.rotation.x += 0.01;
         testBox.rotation.y += 0.01;
     
