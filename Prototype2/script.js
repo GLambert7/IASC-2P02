@@ -47,7 +47,7 @@ controls.enableDamping = true
  ** Meshes **
  ************/
 // TorusKnot
-const torusKnotGeometry = new THREE.TorusKnotGeometry(1, 0.1, 12, 12, 8, 7)
+const torusKnotGeometry = new THREE.TorusKnotGeometry(1, 0.1, 12, 24, 9, 7)
 const torusKnotMaterial = new THREE.MeshBasicMaterial({
     color: new THREE.Color('green')})
 const torusKnot = new THREE.Mesh(torusKnotGeometry, torusKnotMaterial)
@@ -80,7 +80,8 @@ const uiObject = {
     distance: 1,
     rotationX: 5,
     rotationY: 5,
-   
+    scale: 1
+
 }
 
 //testSphere UI
@@ -114,6 +115,13 @@ torusKnotFolder
     .step(0.1)
     .name('Rotation Y')
 
+    torusKnotFolder
+    .add(uiObject, 'scale')
+    .min(0.1)
+    .max(10)
+    .step(0.1)
+    .name('Scale')
+
    
 
 
@@ -136,10 +144,14 @@ const animation = () =>
     //Return elapsed time
     const elapsedTime = clock.getElapsedTime()
 
-    //Animate Sphere
+    //Animate torusKnot
     torusKnot.position.y = Math.sin(elapsedTime * uiObject.speed) * uiObject.distance
     torusKnot.rotation.x = (elapsedTime * uiObject.rotationX) 
     torusKnot.rotation.y = (elapsedTime * uiObject.rotationY)
+    torusKnot.scale.x = uiObject.scale
+    torusKnot.scale.y = uiObject.scale
+    torusKnot.scale.z = uiObject.scale
+    
     
    
     //Update OrbitControls
