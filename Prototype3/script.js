@@ -68,33 +68,15 @@ torus.rotation.y = Math.PI * 0.5
 torus.castShadow = true
 scene.add(torus)
 
-//mouth1
-const capsulegeometry = new THREE.CapsuleGeometry( 0.2, 1, 4, 8 ) 
-const capsulematerial = new THREE.MeshNormalMaterial( )
-const capsule = new THREE.Mesh( capsulegeometry, capsulematerial )
-capsule.position.set(6, -0.8, 0)
-capsule.rotation.x = Math.PI * 0.5
-capsule.castShadow = true
-scene.add( capsule )
-
-//mouth2
-const capsulegeometry1 = new THREE.CapsuleGeometry( 0.2, 0.5, 4, 8 ) 
-const capsulematerial1 = new THREE.MeshNormalMaterial( )
-const capsule1 = new THREE.Mesh( capsulegeometry1, capsulematerial1 )
-capsule1.position.set(6, -0.65, 0.8)
-capsule1.rotation.x = Math.PI * 0.35
-capsule1.castShadow = true
-scene.add( capsule1 )
-
-//mouth3
-const capsulegeometry2 = new THREE.CapsuleGeometry( 0.2, 0.5, 4, 8 ) 
-const capsulematerial2 = new THREE.MeshNormalMaterial( )
-const capsule2 = new THREE.Mesh( capsulegeometry2, capsulematerial2 )
-capsule2.position.set(6, -0.65, -0.8)
-capsule2.rotation.x = Math.PI * -0.35
-capsule2.castShadow = true
-scene.add( capsule2 )
-
+//mouth
+const geometry = new THREE.TorusGeometry( 1, 0.2, 12, 48, Math.PI); 
+const material = new THREE.MeshNormalMaterial( ); 
+const torus1 = new THREE.Mesh( geometry, material );
+torus1.position.set(6, 0, 0) 
+torus1.castShadow = true
+torus1.rotation.y = Math.PI * 0.5
+torus1.rotation.x = Math.PI * 1
+scene.add( torus1 );
 //Eye 1
 const circlegeometry = new THREE.CircleGeometry( 0.5 )
 const circlematerial = new THREE.MeshNormalMaterial({
@@ -125,24 +107,6 @@ capsule3.position.set(6, 0.6, )
 capsule3.rotation.x = Math.PI * 0
 capsule3.castShadow = true
 scene.add( capsule3 )
-
-//mouth 4
-const capsulegeometry4 = new THREE.CapsuleGeometry( 0.2, 0.5, 4, 8 ) 
-const capsulematerial4 = new THREE.MeshNormalMaterial( )
-const capsule4 = new THREE.Mesh( capsulegeometry4, capsulematerial4 )
-capsule4.position.set(6, -0.4, -1.15)
-capsule4.rotation.x = Math.PI * -0.25
-capsule4.castShadow = true
-scene.add( capsule4 )
-
-//mouth 5
-const capsulegeometry5 = new THREE.CapsuleGeometry( 0.2, 0.5, 4, 8 ) 
-const capsulematerial5 = new THREE.MeshNormalMaterial( )
-const capsule5 = new THREE.Mesh( capsulegeometry5, capsulematerial5 )
-capsule5.position.set(6, -0.4, 1.15)
-capsule5.rotation.x = Math.PI * 0.25
-capsule5.castShadow = true
-scene.add( capsule5 )
 
 //Eyebrow 1
 const capsulegeometry6 = new THREE.CapsuleGeometry( 0.2, 0.9, 4, 8 ) 
