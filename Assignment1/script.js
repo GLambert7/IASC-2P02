@@ -6,9 +6,9 @@ import * as dat from "lil-gui"
  ***********/
 //Sizes
 const sizes = {
-    width: window.innerWidth,
-    height: window.innerHeight,
-    aspectRatio:window.innerWidth / window.innerHeight
+    width: window.innerWidth * 0.4,
+    height: window.innerHeight ,
+    aspectRatio:window.innerWidth *0.4/ window.innerHeight
 }
 
 
@@ -20,7 +20,7 @@ const canvas = document.querySelector(".webgl")
 
 // Sceene
 const scene = new THREE.Scene()
-scene.background = new THREE.Color("black")
+//scene.background = new THREE.Color("black")
 
 // Camera
 const camera = new THREE.PerspectiveCamera(
@@ -35,7 +35,8 @@ camera.position.set(10, 2, 7.5)
 // Renderer 
 const renderer = new THREE.WebGLRenderer({
     canvas: canvas,
-    antialias: true
+    antialias: true,
+    alpha: true
 })
 renderer.setSize(sizes.width, sizes.height)
 renderer.shadowMap.enabled = true
@@ -59,6 +60,10 @@ cave.receiveShadow = true
 scene.add(cave)
 
 //Objects
+//face
+
+
+
 //Head
 const torusGeometry = new THREE.TorusGeometry(3, 0.2)
 const torusMaterial = new THREE.MeshNormalMaterial()
@@ -125,17 +130,31 @@ capsule7.position.set(6, 2.4, -1)
 capsule7.rotation.x = Math.PI * -0.3
 capsule7.castShadow = true
 scene.add( capsule7 )
+
+//Face
+const face = new THREE.Group()
+face.add(capsule3)
+face.add(capsule6)
+face.add(capsule7)
+face.add(circle)
+face.add(circle1)
+face.add(torus)
+face.add(torus1)
+scene.add(face)
+
+//sun
+const sunGeometry = new THREE.SphereGeometry()
+const sunMaterial = new THREE.MeshLambertMaterial({
+    emissive: new THREE.Color('orange'),
+    emissiveIntensity:200
+})
+const sun = new THREE.Mesh(sunGeometry, sunMaterial)
+scene.add (sun)
+
 /************
  ** Lights **
  ************/
-//Ampient Light
-//const ambientLight = new THREE.AmbientLight(0x404040)
-//const ambientLight = new THREE.AmbientLight(
- //   new THREE.Color('white')
-//)
-//scene.add(ambientLigh
 
-//directional light
 const directionalLight = new THREE.DirectionalLight(
     new THREE.Color('white'),
     0.5
@@ -152,11 +171,51 @@ directionalLight.shadow.mapSize.height = 1024
 const directionalLightHelper = new THREE.DirectionalLightHelper(directionalLight)
 //scene.add(directionalLightHelper)
 
+/**********************
+ ** DOM INTERACTIONS **
+ **********************/
+const domObject = {
+    part: 1,
+    firstChange:false,
+    secondChange:false,
+    thirdChange:false,
+    fourthChange:false,
+}
+//part 1
+document.querySelector('#part-one').onclick = function(){
+    domObject.part = 1
+}
+
+//part 2
+document.querySelector('#part-two').onclick = function(){
+    domObject.part = 2
+}
+
+//first-change
+document.querySelector('#first-change').onclick = function(){
+    domObject.firstChange = true
+}
+
+//second-change
+document.querySelector('#second-change').onclick = function(){
+    domObject.secondChange = true
+}
+
+//third-change
+document.querySelector('#third-change').onclick = function(){
+    domObject.thirdChange = true
+}
+
+//fourth-change
+document.querySelector('#fourth-change').onclick = function(){
+    domObject.fourthChange = true
+}
 
 /********
  ** UI **
  ********/
 //UI
+/*
 const ui = new dat.GUI()
 
 const lightPositionFolder = ui.addFolder('Light Position')
@@ -168,17 +227,13 @@ lightPositionFolder
     .step(0.1)
     .name('Y')
     
-lightPositionFolder
+    lightPositionFolder
     .add(directionalLight.position, 'z')
     .min(-10)
     .max(10)
     .step(0.1)
     .name('Z')
-
-
-
-    
-
+    */
 /********************
  ** ANIMATION LOOP **
  ********************/
@@ -189,14 +244,55 @@ const animation = () =>
     
     //Return elapsed time
     const elapsedTime = clock.getElapsedTime()
+    console.log(camera.position)
 
-    //animate objects
- 
-   
+    //part-one
+    if(domObject.part === 1)
+    {
+        camera.position.set(6, 0, 0)
+        camera.lookAt(0,0,0)
+    }
+
+    //part-two
+   if(domObject.part === 2)
+    {
+        camera.position.set(25, 1, 0)
+        camera.lookAt(0,0,0)
+    }
+
+    //FIRST-CHANGE
+    if(domObject.firstChange === true)
+    {
+        face.rotation.x = elapsedTime
+    }
+    
+    //SECOND-CHANGE
+    if(domObject.secondChange === true)
+    {
+        face.position.y = Math.sin(elapsedTime)
+    }
+    //THIRD-CHANGE
+    if(domObject.thirdChange === true)
+        {
+            face.position.z = Math.sin(elapsedTime)
+        }
+    //FOURTH-CHANGE
+    if(domObject.fourthChange === true)
+        {
+            face.rotation.z = elapsedTime
+        }
     //update directionalLightHelper
-    //directionalLightHelper.update()
-//Update OrbitControls
-controls.update
+    directionalLightHelper.update()
+
+    //Update OrbitControls
+    controls.update
+
+    //part 
+    //update sun pos to copy light pos
+    sun.position.copy(directionalLight.position)
+
+    //move light
+    directionalLight.position.z = Math.sin(elapsedTime - 0.5) * 3
     
     //Renderer
     renderer.render(scene, camera)
@@ -206,3 +302,5 @@ controls.update
 }
 
 animation()
+
+

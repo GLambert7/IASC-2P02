@@ -1,0 +1,43 @@
+body {
+    background-color:rgb(1, 59, 1);
+}
+
+h1 {
+    color: blanchedalmond;
+    font-size: 48px;
+    text-align: center;
+}
+
+.flexbox {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 95;
+    margin: 0 auto;
+    z-index: 1;
+}
+
+.webgl {
+    position: relative;
+    top: 0;
+    left: 0;
+    outline: none;
+    z-index: 2;
+
+}
+
+.essay {
+    color:white;
+    font-size: 24px;
+    width:100%;
+}
+
+.Clickable{
+    color:aqua;
+    cursor: grab;
+}
+
+.Clickable:hover {
+    color:violet;
+    
+}
