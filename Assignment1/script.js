@@ -61,13 +61,16 @@ scene.add(cave)
 
 
 //candle
-const candleGeometry = new THREE.CylinderGeometry(1, 1, 5, 32, 1, 2)
+const candleGeometry = new THREE.CylinderGeometry(0.5, 0.5, 3,)
 const candleMaterial = new THREE.MeshLambertMaterial({
-    color: new THREE.Color('white')
+    color: new THREE.Color('white'),
+    side: THREE.DoubleSide
+    
 })
 const candle = new THREE.Mesh(candleGeometry, candleMaterial)
-candle.position.set(6, 2, 1)
+candle.position.set(6, 0, 1)
 candle.castShadow = true
+candle.openEnded = false
 scene.add(candle)
 
 
@@ -175,6 +178,11 @@ directionalLight.castShadow = true
 directionalLight.shadow.mapSize.width = 1024
 directionalLight.shadow.mapSize.height = 1024
 
+const areaLight = new THREE.AmbientLight(
+    new THREE.Color('white'),
+    0.5
+)
+scene.add(areaLight)
 
 //directional light helper
 const directionalLightHelper = new THREE.DirectionalLightHelper(directionalLight)
