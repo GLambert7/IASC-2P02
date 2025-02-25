@@ -71,8 +71,37 @@ const candle = new THREE.Mesh(candleGeometry, candleMaterial)
 candle.position.set(6, 0, 1)
 candle.castShadow = true
 candle.openEnded = false
-scene.add(candle)
 
+//candle2
+const candleGeometry2 = new THREE.CylinderGeometry(0.5, 0.5, 3,)
+const candleMaterial2 = new THREE.MeshLambertMaterial({
+    color: new THREE.Color('white'),
+    side: THREE.DoubleSide
+    
+})
+const candle2 = new THREE.Mesh(candleGeometry2, candleMaterial2)
+candle2.position.set(6, 0, -3)
+candle2.castShadow = true
+candle2.openEnded = false
+
+//wick
+const wickGeometry = new THREE.CapsuleGeometry(0.09, 0.5, 4)
+const wickMaterial = new THREE.MeshLambertMaterial({
+    color: new THREE.Color('grey'),
+})
+const wick = new THREE.Mesh(wickGeometry, wickMaterial)
+wick.position.set(6, 1.5, 1)
+wick.castShadow = true
+scene.add(wick)
+
+//wick2
+const wickGeometry2 = new THREE.CapsuleGeometry(0.09, 0.5, 4)
+const wickMaterial2 = new THREE.MeshLambertMaterial({
+    color: new THREE.Color('grey'),
+})
+const wick2 = new THREE.Mesh(wickGeometry2, wickMaterial2)
+wick2.position.set(6, 1.5, -3)
+wick2.castShadow = true
 
 
 //sun
@@ -91,7 +120,7 @@ scene.add (sun)
  ************/
 
 // Fire particle setup System
-const particleCount = 40;
+const particleCount = 10;
 const particles = new THREE.BufferGeometry();
 const positions = new Float32Array(particleCount * 3);
 const velocities = new Float32Array(particleCount * 3);
@@ -126,8 +155,9 @@ const particleMaterial = new THREE.PointsMaterial({
 });
 
 const fireParticles = new THREE.Points(particles, particleMaterial);
-scene.add(fireParticles);
-fireParticles.position.set(6, 2.4, 1)
+fireParticles.position.set(6, 2, 1)
+const fireParticles2 = new THREE.Points(particles, particleMaterial);
+fireParticles2.position.set(6, 2, -3)
 
 //animate the fire particles so its not just a png pnging
 function animate() {
@@ -160,7 +190,12 @@ const velocities = particles.attributes.velocity.array;
 
 animate();
 
+//candle group
+const candleGroup = new THREE.Group()
+candleGroup.add(candle)
+candleGroup.add(wick)
 
+scene.add(candleGroup)
 
 
 /************
@@ -255,10 +290,38 @@ const animation = () =>
         camera.lookAt(0,0,0)
     }
 
+ //frame counter
+let frameCount = 0
+
     //FIRST-CHANGE
     if(domObject.firstChange === true)
     {
-        face.rotation.x = elapsedTime
+        scene.add(fireParticles)
+
+        if(frameCount % 2 === 0)
+            {
+    
+                if(candle.scale.y > 0.1)
+                {
+                candle.position.y -= 0.00075
+                wick.position.y -= 0.0015
+                fireParticles.position.y -= 0.0015
+                }
+                else
+                    {
+                        scene.remove(fireParticles)
+                    }
+
+            }
+        if(frameCount % 2 === 0)
+        {
+
+            if(candle.scale.y > 0.1)
+            {
+            candle.scale.y -= 0.0005
+            
+            }
+        }
     }
     
     //SECOND-CHANGE
