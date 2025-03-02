@@ -383,7 +383,7 @@ const animation = () =>
         }
         scene.add(fireParticles);
         scene.add(fireParticles2);
-        if(fireParticles2.position.x != 6){
+        if(fireParticles2.position.y != -1.5){
             scene.remove(fireParticles2)
         }
         
