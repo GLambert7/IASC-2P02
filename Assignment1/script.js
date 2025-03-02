@@ -20,7 +20,7 @@ const canvas = document.querySelector(".webgl")
 
 // Sceene
 const scene = new THREE.Scene()
-//scene.background = new THREE.Color("black")
+
 
 // Camera
 const camera = new THREE.PerspectiveCamera(
@@ -68,29 +68,29 @@ const candleMaterial = new THREE.MeshLambertMaterial({
     
 })
 const candle = new THREE.Mesh(candleGeometry, candleMaterial)
-candle.position.set(6, 0, 1)
+candle.position.set(6, 0, 0)
 candle.castShadow = true
 candle.openEnded = false
 
 //candle2
-const candleGeometry2 = new THREE.CylinderGeometry(0.5, 0.5, 3,)
+const candleGeometry2 = new THREE.CylinderGeometry(0.7, 0.5, 3,)
 const candleMaterial2 = new THREE.MeshLambertMaterial({
     color: new THREE.Color('white'),
     side: THREE.DoubleSide
     
 })
 const candle2 = new THREE.Mesh(candleGeometry2, candleMaterial2)
-candle2.position.set(6, 0, -3)
+candle2.position.set(6, 0, -1.5)
 candle2.castShadow = true
 candle2.openEnded = false
 
 //wick
-const wickGeometry = new THREE.CapsuleGeometry(0.09, 0.5, 4)
+const wickGeometry = new THREE.CapsuleGeometry(0.09, 0.25, 4)
 const wickMaterial = new THREE.MeshLambertMaterial({
     color: new THREE.Color('grey'),
 })
 const wick = new THREE.Mesh(wickGeometry, wickMaterial)
-wick.position.set(6, 1.5, 1)
+wick.position.set(6, 1.5, 0)
 wick.castShadow = true
 scene.add(wick)
 
@@ -100,20 +100,56 @@ const wickMaterial2 = new THREE.MeshLambertMaterial({
     color: new THREE.Color('grey'),
 })
 const wick2 = new THREE.Mesh(wickGeometry2, wickMaterial2)
-wick2.position.set(6, 1.5, -3)
+wick2.position.set(6, 1.5, -1.5)
 wick2.castShadow = true
 
 
-//sun
-const sunGeometry = new THREE.SphereGeometry()
-const sunMaterial = new THREE.MeshLambertMaterial({
+//Lantern
+const lanternGeometry = new THREE.BoxGeometry()
+const lanternMaterial = new THREE.MeshLambertMaterial({
     emissive: new THREE.Color('orange'),
     emissiveIntensity:200
 })
-const sun = new THREE.Mesh(sunGeometry, sunMaterial)
-scene.add (sun)
+const lantern = new THREE.Mesh(lanternGeometry, lanternMaterial)
+scene.add (lantern)
 
+//table
+const tableGeometry = new THREE.BoxGeometry(4, 0.3, 5)
+const tableMaterial = new THREE.MeshLambertMaterial({
+    color: new THREE.Color('#61443a')
+})
+const table = new THREE.Mesh(tableGeometry, tableMaterial)
+table.position.set(6, -1.5, 0)
+table.castShadow = true
+scene.add(table)
 
+//table leg
+const tableLegGeometry = new THREE.BoxGeometry(0.3, 4, 0.3)
+const tableLegMaterial = new THREE.MeshLambertMaterial({
+    color: new THREE.Color('#61443a')
+})
+const tableLeg = new THREE.Mesh(tableLegGeometry, tableLegMaterial)
+tableLeg.position.set(4, -3.5, 2.34)
+tableLeg.castShadow = true
+scene.add(tableLeg)
+
+//table leg 2
+const tableLeg2 = new THREE.Mesh(tableLegGeometry, tableLegMaterial)
+tableLeg2.position.set(7.8, -3.5, 2.34)
+tableLeg2.castShadow = true
+scene.add(tableLeg2)
+
+//table leg 3
+const tableLeg3 = new THREE.Mesh(tableLegGeometry, tableLegMaterial)
+tableLeg3.position.set(7.8, -3.5, -2.34)
+tableLeg3.castShadow = true
+scene.add(tableLeg3)
+
+//table leg 4
+const tableLeg4 = new THREE.Mesh(tableLegGeometry, tableLegMaterial)
+tableLeg4.position.set(4, -3.5, -2.34)
+tableLeg4.castShadow = true
+scene.add(tableLeg4)
 
 /************
  *** FIRE ***
@@ -155,9 +191,9 @@ const particleMaterial = new THREE.PointsMaterial({
 });
 
 const fireParticles = new THREE.Points(particles, particleMaterial);
-fireParticles.position.set(6, 2, 1)
+fireParticles.position.set(6, 2, 0)
 const fireParticles2 = new THREE.Points(particles, particleMaterial);
-fireParticles2.position.set(6, 2, -3)
+fireParticles2.position.set(6, 2, -1.5)
 
 //animate the fire particles so its not just a png pnging
 function animate() {
@@ -197,6 +233,12 @@ candleGroup.add(wick)
 
 scene.add(candleGroup)
 
+//second candle group
+const candleGroup2 = new THREE.Group();
+candleGroup2.add(candle2);
+candleGroup2.add(wick2);
+
+
 
 /************
  ** Lights **
@@ -204,14 +246,25 @@ scene.add(candleGroup)
 
 const directionalLight = new THREE.DirectionalLight(
     new THREE.Color('white'),
-    3.14
+    2.14
 )
 scene.add(directionalLight)
-directionalLight.position.set(20, 4.1, 0)
+directionalLight.position.set(20, 0, 0)
 directionalLight.target = cave
 directionalLight.castShadow = true
 directionalLight.shadow.mapSize.width = 1024
 directionalLight.shadow.mapSize.height = 1024
+
+const directionalLight2 = new THREE.DirectionalLight(
+    new THREE.Color('white'),
+    0.6
+)
+
+directionalLight2.position.set(20, 0, 20)
+directionalLight2.target = cave
+directionalLight2.castShadow = true
+directionalLight2.shadow.mapSize.width = 1024
+directionalLight2.shadow.mapSize.height = 1024
 
 const areaLight = new THREE.AmbientLight(
     new THREE.Color('white'),
@@ -253,6 +306,11 @@ document.querySelector('#second-change').onclick = function(){
     domObject.secondChange = true
 }
 
+//second-change2
+document.querySelector('#second-change2').onclick = function(){
+    domObject.secondChange = true
+}
+
 //third-change
 document.querySelector('#third-change').onclick = function(){
     domObject.thirdChange = true
@@ -262,83 +320,177 @@ document.querySelector('#third-change').onclick = function(){
 document.querySelector('#fourth-change').onclick = function(){
     domObject.fourthChange = true
 }
+var timeoutId = 0
+function resetCandle() {
+    clearTimeout(timeoutId);
+    timeoutId = null;
+    domObject.firstChange = false;
+    domObject.secondChange = false;
 
+    candle.scale.set(1, 1, 1);
+    candle.position.set(6, 0, 0);
+    wick.position.set(6, 1.5, 0);
+    fireParticles.position.set(6, 2, 0);
+
+    candle2.scale.set(1, 1, 1);
+    candle2.position.set(6, 0, -1.5);
+    wick2.position.set(6, 1.5, -1.5);
+    fireParticles2.position.set(6, 2, -1.5);
+
+    scene.remove(fireParticles); 
+    scene.remove(fireParticles2);
+}
 
 /********************
  ** ANIMATION LOOP **
  ********************/
+ //frame counter
+ let frameCount = 0
+
 const clock = new THREE.Clock()
+
+
 
 const animation = () => 
 {
-    
+     
+
     //Return elapsed time
     const elapsedTime = clock.getElapsedTime()
    
 
     //part-one
-   // if(domObject.part === 1)
+   if(domObject.part === 1)
     {
-       // camera.position.set(6, 0, 0)
+        camera.position.set(5.6, 0, 0)
         camera.lookAt(0,0,0)
     }
 
     //part-two
-   //if(domObject.part === 2)
+   if(domObject.part === 2)
     {
-        //camera.position.set(25, 1, 0)
+        camera.position.set(20, 0, 6)
         camera.lookAt(0,0,0)
     }
 
- //frame counter
-let frameCount = 0
-
     //FIRST-CHANGE
-    if(domObject.firstChange === true)
-    {
-        scene.add(fireParticles)
+    if (domObject.firstChange) {
+        if (!timeoutId) {
+            timeoutId = setTimeout(() => {
+                resetCandle();
+                domObject.firstChange = false;
+            }, 5000);
+        }
+        scene.add(fireParticles);
+        scene.add(fireParticles2);
+        if(fireParticles2.position.x != 6){
+            scene.remove(fireParticles2)
+        }
+        
+        if (frameCount % 4 === 0) {
+            if (candle.scale.y > 0.005) {
+                candle.position.y -= 0.0014;
+                wick.position.y -= 0.0030;
+                fireParticles.position.y -= 0.0030;
 
-        if(frameCount % 2 === 0)
-            {
-    
-                if(candle.scale.y > 0.1)
-                {
-                candle.position.y -= 0.00075
-                wick.position.y -= 0.0015
-                fireParticles.position.y -= 0.0015
-                }
-                else
-                    {
-                        scene.remove(fireParticles)
-                    }
-
+                candle2.position.y -= 0.0014;
+                wick2.position.y -= 0.0030;
+                fireParticles2.position.y -= 0.0030;
+            } else {
+                scene.remove(fireParticles);
+                scene.remove(fireParticles2);
+                wick.position.set(100, 100, 100);
+                wick2.position.set(100, 100, 100);
             }
-        if(frameCount % 2 === 0)
-        {
+        }
 
-            if(candle.scale.y > 0.1)
-            {
-            candle.scale.y -= 0.0005
-            
+        if (frameCount % 2 === 0) {
+            if (candle.scale.y > 0.005) {
+                candle.scale.y -= 0.001;
+                candle2.scale.y -= 0.001;
             }
         }
     }
-    
+     
     //SECOND-CHANGE
-    if(domObject.secondChange === true)
-    {
-        face.position.y = Math.sin(elapsedTime)
+    if (domObject.secondChange === true) {
+        
+    
+
+        if (!timeoutId) {
+            timeoutId = setTimeout(() => {
+                resetCandle();
+                domObject.secondChange = false; // Ensure instant reset
+            }, 5000);
+        }
+
+        scene.remove(fireParticles)
+        scene.remove(fireParticles2)
+        candle.position.y = candle.position.y;
+        wick.position.y = wick.position.y;
+    
+        candle.scale.y = candle.scale.y;
+    
+        if (fireParticles.parent) {
+            fireParticles.parent.remove(fireParticles);
+            fireParticles.parent.remove(fireParticles2);
+        }
+    
+        domObject.firstChange = false;
+        
     }
-    //THIRD-CHANGE
+
+    //SECOND-CHANGE2
+    if (domObject.secondChange2 === true) {
+        
+        if (!timeoutId) {
+            timeoutId = setTimeout(() => {
+                resetCandle();
+                domObject.secondChange = false; // Ensure instant reset
+            }, 5000);
+        }
+
+        scene.remove(fireParticles)
+        scene.remove(fireParticles2)
+        candle.position.y = candle.position.y;
+        wick.position.y = wick.position.y;
+    
+        
+        candle.scale.y = candle.scale.y;
+    
+        
+        if (fireParticles.parent) {
+            fireParticles.parent.remove(fireParticles);
+            fireParticles.parent.remove(fireParticles2);
+        }
+    
+        domObject.firstChange = false;
+        
+    }
+
+    //third-CHANGE
     if(domObject.thirdChange === true)
         {
-            face.position.z = Math.sin(elapsedTime)
+            scene.add(candleGroup2);
+           
         }
+
     //FOURTH-CHANGE
     if(domObject.fourthChange === true)
         {
-            face.rotation.z = elapsedTime
+            scene.add(directionalLight2)
+            directionalLight2.position.z = Math.sin(elapsedTime / 2)* 20
+            
         }
+
+        if(directionalLight2.position.z >= 10){
+            scene.remove(directionalLight2)
+        }
+
+        if(directionalLight2.position.z <= -10){
+            scene.remove(directionalLight2)
+        }
+
     //update directionalLightHelper
     directionalLightHelper.update()
 
@@ -347,7 +499,7 @@ let frameCount = 0
 
     //part 
     //update sun pos to copy light pos
-    sun.position.copy(directionalLight.position)
+    lantern.position.copy(directionalLight.position)
 
     //move light
     //directionalLight.position.z = Math.sin(elapsedTime - 0.5) * 3
@@ -361,4 +513,4 @@ let frameCount = 0
 
 animation()
 
-
+//Too much code
