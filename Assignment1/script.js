@@ -379,7 +379,7 @@ const animation = () =>
             timeoutId = setTimeout(() => {
                 resetCandle();
                 domObject.firstChange = false;
-            }, 5000);
+            }, 8000);
         }
         scene.add(fireParticles);
         scene.add(fireParticles2);
@@ -389,13 +389,13 @@ const animation = () =>
         
         if (frameCount % 4 === 0) {
             if (candle.scale.y > 0.005) {
-                candle.position.y -= 0.0014;
-                wick.position.y -= 0.0030;
-                fireParticles.position.y -= 0.0030;
+                candle.position.y -= 0.0056;
+                wick.position.y -= 0.0120;
+                fireParticles.position.y -= 0.0120;
 
-                candle2.position.y -= 0.0014;
-                wick2.position.y -= 0.0030;
-                fireParticles2.position.y -= 0.0030;
+                candle2.position.y -= 0.0056;
+                wick2.position.y -= 0.0120;
+                fireParticles2.position.y -= 0.0120;
             } else {
                 scene.remove(fireParticles);
                 scene.remove(fireParticles2);
@@ -406,8 +406,8 @@ const animation = () =>
 
         if (frameCount % 2 === 0) {
             if (candle.scale.y > 0.005) {
-                candle.scale.y -= 0.001;
-                candle2.scale.y -= 0.001;
+                candle.scale.y -= 0.004;
+                candle2.scale.y -= 0.004;
             }
         }
     }
