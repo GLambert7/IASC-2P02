@@ -11,7 +11,7 @@ const sizes = {
     height: window.innerHeight,
     aspectRatio: window.innerWidth / window.innerHeight
 }
-
+let height = null;
 //resizing
 window.addEventListener('resize', () => 
 {
@@ -74,35 +74,81 @@ scene.add(directionalLight)
 // Cube Geometry
 const boxGeometry = new THREE.BoxGeometry(0.5, 0.5, 0.5)
 
-const drawCube = (height, params) =>
+const drawShape = (height, params) =>
 {
-    //create cube material
-    const material = new THREE.MeshStandardMaterial({
+   
+    //create shape material
+    const materialOptions = {
         color: new THREE.Color(params.color)
-    })
+    }
+    //make cook transparent
+    if (params.term === 'cook') {
+        materialOptions.transparent = true
+        materialOptions.opacity = 0.5 // or however transparent you want it
+    }
+    
+    const material = new THREE.MeshStandardMaterial(materialOptions)
 
     //Create cube
-    const cube = new THREE.Mesh(boxGeometry, material)
+let geometry
+
+if (params.term === 'cook') {
+    geometry = new THREE.OctahedronGeometry(0.3) // radius can be adjusted
+
+} 
+else if (params.term === 'cancer')
+{
+    geometry = new THREE.IcosahedronGeometry(0.3)
+}
+else {
+    geometry = boxGeometry
+}
+
+const mesh = new THREE.Mesh(geometry, material)
 
     //position cube
-    cube.position.x = (Math.random() - 0.5) * params.diameter
-    cube.position.z = (Math.random() - 0.5) * params.diameter
-    cube.position.y = height - 10
+    let spacingMultiplier = 1
+
+if (params.ShrinkSpacing) {
+    
+    spacingMultiplier = Math.max(0.1, 2 - height * 0.09)
+}
+
+if (params.growSpacing) {
+
+    spacingMultiplier = Math.min(3, 1 + height * 0.09)
+}
+
+
+mesh.userData.height = height
+
+const effectiveDiameter = params.diameter * spacingMultiplier
+
+mesh.position.x = (Math.random() - 0.5) * effectiveDiameter
+mesh.position.z = (Math.random() - 0.5) * effectiveDiameter
+    mesh.position.y = height - 10
+    mesh.userData.height = mesh.position.y
+
+    
 
     //scale cube
 
-    cube.scale.x = params.scale
-    cube.scale.y = params.scale
-    cube.scale.z = params.scale
+    mesh.scale.x = params.scaleX ?? params.scale
+    mesh.scale.y = params.scaleY ?? params.scale
+    mesh.scale.z = params.scaleZ ?? params.scale
+
+
+
+    mesh.userData.height = mesh.position.y
 
     //random cube rotation
     if(params.randomized){
-    cube.rotation.x = Math.random() * 2 * Math.PI
-    cube.rotation.y = Math.random() * 2 * Math.PI
-    cube.rotation.z = Math.random() * 2 * Math.PI
+    mesh.rotation.x = Math.random() * 2 * Math.PI
+    mesh.rotation.y = Math.random() * 2 * Math.PI
+    mesh.rotation.z = Math.random() * 2 * Math.PI
     }
     //add cube to group
-    params.group.add(cube)
+    params.group.add(mesh)
     
 }
 
@@ -128,37 +174,45 @@ const group3 = new THREE.Group()
 scene.add(group3)
 
 const uiObj = {
-    sourceText: "the quick brown fox jumped over the lazy dog",
+    sourceText: " ",
     saveSourceText() {
         saveSourceText()
     },
     term1: {
-        term: 'fox',
-        color: '#aa00ff',
+        term: 'cancer',
+        color: '#ff0000',
         group: group1,
-        diameter: 10,
-        scale: 1,
+        diameter: 30,
+        scale: 5,
         ncubes: 100,
-        randomized: true, 
+        randomized: true,
+        ShrinkSpacing: false, 
+        
         
     },
     term2: {
-        term: 'dog',
-        color: '#00ffaa',
+        term: 'cook',
+        color: '#00bfff',
         diameter: 10,
         group: group2,
-        scale: 1,
+        scaleX: 1,
+        scaleY: 3, 
+        scaleZ: 1,
         ncubes: 100,
         randomized: true, 
+        ShrinkSpacing: false,
+        rotationSpeed: 0.2,
+        growSpacing: true,
     },
     term3: {
-        term: '',
-        color: '',
+        term: 'jesse',
+        color: '#FFC5D3',
         diameter: 10,
         group: group3,
         scale: 1,
         ncubes: 100,
         randomized: true, 
+        ShrinkSpacing: true,
     },
 
     saveTerms() {
@@ -297,7 +351,7 @@ const findSearchTermInTokenizedText = (perams) =>
             
             //call drawCuube function 100 times using converted height value
             for(let a = 0; a < perams.ncubes; a++)
-            drawCube(height, perams)
+            drawShape(height, perams)
         }
     }
 }
@@ -317,6 +371,15 @@ const clock = new THREE.Clock()
 const animation = () => {
     // return elapsed time
     const elapsedTime = clock.getElapsedTime()
+    const deltaTime = clock.getDelta() // ← use delta for smooth frame updates
+
+    // Get average height of 'cook' shapes
+    let avgHeight = 0
+    group2.children.forEach(mesh => {
+        const h = mesh.userData.height ?? 0
+        const speed = h * 0.01 // tweak this multiplier for faster/slower spin
+        mesh.rotation.y += speed
+    })
 
 
 
