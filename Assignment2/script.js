@@ -210,7 +210,7 @@ const uiObj = {
         diameter: 10,
         group: group3,
         scale: 1,
-        ncubes: 100,
+        ncubes: 10,
         randomized: true, 
         ShrinkSpacing: true,
     },
